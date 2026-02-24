@@ -5,7 +5,7 @@ Kazzi-Hub is organized as a set of independent repositories. This keeps the publ
 ## Repositories
 
 - **kazzihub.website** — Public-facing marketing site and student application entry point.
-- **kazzihub.student.portal** — Student learning portal (courses, lessons, assignments, progress).
+- **kazzihub.lms** — Student learning portal (courses, lessons, assignments, progress).
 - **kazzihub.admin.portal** — Internal staff dashboard (review applicants, manage cohorts, operations).
 - **kazzihub.core** — Core backend API service powering all client applications.
 
