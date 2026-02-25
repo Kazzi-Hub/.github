@@ -1,13 +1,51 @@
-# Kazzi-Hub Platform
+# Kazzi-Hub Platform Infrastructure
 
-Kazzi-Hub is organized as a set of independent repositories. This keeps the public website, student experience, staff tooling, and core backend cleanly separated, with clear ownership, security boundaries, and deployment pipelines.
+Kazzi-Hub is organized into two primary repositories. This structure provides a clean separation of concerns between the **Business Logic (Python)** and the **User Experience (TypeScript)**, while enabling seamless sharing of UI components and authentication logic across all subdomains.
 
-## Repositories
+## 1. The Repositories
 
-- **kazzihub.website** — Public-facing marketing site and student application entry point.
-- **kazzihub.lms** — Student learning portal (courses, lessons, assignments, progress).
-- **kazzihub.admin.portal** — Internal staff dashboard (review applicants, manage cohorts, operations).
-- **kazzihub.core** — Core backend API service powering all client applications.
+### `kazzihub-core` (The Engine)
+
+* **Role:** Central Backend API & Identity Management.
+* **Stack:** FastAPI, Python 3.12+, PostgreSQL (Supabase), Upstash Redis, Taskiq.
+* **Purpose:** * Single source of truth for the database and RBAC logic.
+* Handles the SSO handshake and JWT issuance.
+* Manages long-running background tasks and file storage.
+
+
+
+### `kazzihub-monorepo` (The Interface)
+
+* **Role:** Unified Frontend Workspace for all subdomains.
+* **Stack:** Next.js, TypeScript, Tailwind CSS, Turborepo (orchestration).
+* **Apps Included:**
+* `apps/marketing` (`kazzihub.com`) — Public site & SEO.
+* `apps/lms` (`lms.kazzihub.com`) — Student learning portal.
+* `apps/staff` (`admin.kazzihub.com`) — Operations & cohort management.
+* `apps/auth` (`auth.kazzihub.com`) — The central SSO login experience.
+
+
+* **Purpose:** * Maintains a consistent design system across all products.
+* Shared `@kazzihub/auth-client` package for uniform login/logout behavior.
+* Atomic deployments: updates to the shared UI library propagate to all apps instantly.
+
+---
+
+## 2. Why This Two-Repo Split?
+
+| Feature | Benefit |
+| --- | --- |
+| **Type Safety** | We will use `kazzihub-core` OpenAPI spec to generate a TypeScript client for the `kazzihub-monorepo`, ensuring backend and frontend are always in sync. |
+| **Shared Auth** | The complex "Host-Only Cookie" and "PKCE Exchange" logic is written **once** in a shared library inside the monorepo and used by all apps. |
+| **Developer UX** | Backend devs will stay in a pure Python environment (`uv`, `ruff`); Frontend devs stay in a pure TS environment without cross-language friction. |
+| **Branding** | Updates to the Kazzi-Hub logo or color palette are made in one shared package and reflected across LMS, Staff, and Marketing apps. |
+
+---
+
+## 3. Simplified Deployment Strategy
+
+* **`kazzihub-core`:** Deployed as a Docker container on Supabase or a specialized ASGI host. This repo manages its own database migrations (`Alembic`).
+* **`kazzihub-monorepo`:** Deployed on Vercel. Vercel automatically detects the Turborepo structure, deploying `lms.kazzihub.com` and `admin.kazzihub.com` as independent projects while sharing the same underlying code library.
 
 ---
 
