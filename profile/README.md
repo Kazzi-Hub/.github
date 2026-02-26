@@ -5,7 +5,7 @@ Kazzi-Hub is organized into two primary repositories. This structure provides a 
 ## 1. The Repositories
 
 ### `kazzihub-core` (The Engine)
-
+* **Repo:** [`kazzihub.core`](https://github.com/Kazzi-Hub/kazzihub.core)
 * **Role:** Central Backend API & Identity Management.
 * **Stack:** FastAPI, Python 3.12+, PostgreSQL (Supabase), Upstash Redis, Taskiq.
 * **Purpose:** * Single source of truth for the database and RBAC logic.
@@ -15,7 +15,7 @@ Kazzi-Hub is organized into two primary repositories. This structure provides a 
 
 
 ### `kazzihub-monorepo` (The Interface)
-
+* **Repo:** [`kazzihub.apps`](https://github.com/Kazzi-Hub/kazzihub.apps)
 * **Role:** Unified Frontend Workspace for all subdomains.
 * **Stack:** Next.js, TypeScript, Tailwind CSS, Turborepo (orchestration).
 * **Apps Included:**
