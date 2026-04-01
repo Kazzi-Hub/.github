@@ -1,11 +1,11 @@
-# Kazzi-Hub Platform Infrastructure
+# Acumace Platform Infrastructure
 
-Kazzi-Hub is organized into two primary repositories. This structure provides a clean separation of concerns between the **Business Logic (Python)** and the **User Experience (TypeScript)**, while enabling seamless sharing of UI components and authentication logic across all subdomains.
+Acumace is organized into two primary repositories. This structure provides a clean separation of concerns between the **Business Logic (Python)** and the **User Experience (TypeScript)**, while enabling seamless sharing of UI components and authentication logic across all subdomains.
 
 ## 1. The Repositories
 
-### `kazzihub-core` (The Engine)
-* **Repo:** [`kazzihub.core`](https://github.com/Kazzi-Hub/kazzihub.core)
+### `acumace.core` (The Engine)
+* **Repo:** [`acumace.core`](https://github.com/acumace/acumace.core)
 * **Role:** Central Backend API & Identity Management.
 * **Stack:** FastAPI, Python 3.12+, PostgreSQL (Supabase), Upstash Redis, Taskiq.
 * **Purpose:** * Single source of truth for the database and RBAC logic.
@@ -14,19 +14,19 @@ Kazzi-Hub is organized into two primary repositories. This structure provides a 
 
 
 
-### `kazzihub-monorepo` (The Interface)
-* **Repo:** [`kazzihub.apps`](https://github.com/Kazzi-Hub/kazzihub.apps)
+### `acumace-monorepo` (The Interface)
+* **Repo:** [`acumace.apps`](https://github.com/acumace/acumace.apps)
 * **Role:** Unified Frontend Workspace for all subdomains.
 * **Stack:** Next.js, TypeScript, Tailwind CSS, Turborepo (orchestration).
 * **Apps Included:**
-* `apps/marketing` (`kazzihub.com`) — Public site & SEO.
-* `apps/lms` (`lms.kazzihub.com`) — Student learning portal.
-* `apps/staff` (`admin.kazzihub.com`) — Operations & cohort management.
-* `apps/auth` (`auth.kazzihub.com`) — The central SSO login experience.
+* `apps/marketing` (`acumace.com`) — Public site & SEO.
+* `apps/lms` (`lms.acumace.com`) — Student learning portal.
+* `apps/staff` (`admin.acumace.com`) — Operations & cohort management.
+* `apps/auth` (`auth.acumace.com`) — The central SSO login experience.
 
 
 * **Purpose:** * Maintains a consistent design system across all products.
-* Shared `@kazzihub/auth-client` package for uniform login/logout behavior.
+* Shared `@acumace/auth-client` package for uniform login/logout behavior.
 * Atomic deployments: updates to the shared UI library propagate to all apps instantly.
 
 ---
@@ -35,17 +35,17 @@ Kazzi-Hub is organized into two primary repositories. This structure provides a 
 
 | Feature | Benefit |
 | --- | --- |
-| **Type Safety** | We will use `kazzihub-core` OpenAPI spec to generate a TypeScript client for the `kazzihub-monorepo`, ensuring backend and frontend are always in sync. |
+| **Type Safety** | We will use `acumace-core` OpenAPI spec to generate a TypeScript client for the `acumace-monorepo`, ensuring backend and frontend are always in sync. |
 | **Shared Auth** | The complex "Host-Only Cookie" and "PKCE Exchange" logic is written **once** in a shared library inside the monorepo and used by all apps. |
 | **Developer UX** | Backend devs will stay in a pure Python environment (`uv`, `ruff`); Frontend devs stay in a pure TS environment without cross-language friction. |
-| **Branding** | Updates to the Kazzi-Hub logo or color palette are made in one shared package and reflected across LMS, Staff, and Marketing apps. |
+| **Branding** | Updates to the acumace logo or color palette are made in one shared package and reflected across LMS, Staff, and Marketing apps. |
 
 ---
 
 ## 3. Simplified Deployment Strategy
 
-* **`kazzihub-core`:** Deployed as a Docker container on Supabase or a specialized ASGI host. This repo manages its own database migrations (`Alembic`).
-* **`kazzihub-monorepo`:** Deployed on Vercel. Vercel automatically detects the Turborepo structure, deploying `lms.kazzihub.com` and `admin.kazzihub.com` as independent projects while sharing the same underlying code library.
+* **`acumace-core`:** Deployed as a Docker container on Supabase or a specialized ASGI host. This repo manages its own database migrations (`Alembic`).
+* **`acumace-monorepo`:** Deployed on Vercel. Vercel automatically detects the Turborepo structure, deploying `lms.acumace.com` and `admin.acumace.com` as independent projects while sharing the same underlying code library.
 
 ---
 
